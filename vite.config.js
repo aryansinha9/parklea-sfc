@@ -13,6 +13,7 @@ htmlFiles.forEach(file => {
 
 export default defineConfig({
   root: './parklea-site',
+  envDir: __dirname,
   server: { port: 3000, open: true },
   build: {
     outDir: '../dist',

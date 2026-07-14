@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="image-slot.js"></script>
+<script type="module" src="js/cms.js"></script>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -150,13 +151,13 @@
   <div class="section-inner">
     <div class="content-box reveal">
       <h4>Regulations</h4>
-      <ul class="link-list">
+      <ul class="link-list" data-cms="policies-regulations">
         <li><a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/psfc_by_laws___regulations_120618.pdf" target="_blank">PSFC By-Laws and Regulations (Latest Version)</a></li>
         <li><a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/psfc_constitution.pdf" target="_blank">PSFC Constitution</a></li>
       </ul>
       
       <h4 style="margin-top: 48px;">Policies</h4>
-      <ul class="link-list">
+      <ul class="link-list" data-cms="policies-policies">
         <li><a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/refund_policy.pdf" target="_blank">PSFC Refund Policy</a></li>
         <li><a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/zero_tolerance_policy.pdf" target="_blank">PSFC Zero Tolerance Policy</a></li>
         <li><a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/fnsw_hot_weather_policy.pdf" target="_blank">FNSW Hot Weather Policy</a></li>
@@ -178,13 +179,13 @@
       </ul>
       
       <h4 style="margin-top: 48px;">Guidelines</h4>
-      <ul class="link-list">
+      <ul class="link-list" data-cms="policies-guidelines">
         <li><a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/document_-_ground_official_guidelines_copy.pdf" target="_blank">Ground Official Guidelines</a></li>
         <li><a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/document_-_match_day_supervisor_guidelines.pdf" target="_blank">Match Day Supervisor Guidelines</a></li>
       </ul>
       
       <h4 style="margin-top: 48px;">Code of Conduct</h4>
-      <ul class="link-list">
+      <ul class="link-list" data-cms="policies-code_of_conduct">
         <li><a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/code_of_behaviour_coach.pdf" target="_blank">For Coaches</a></li>
         <li><a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/code_of_behaviour_manager.pdf" target="_blank">For Managers</a></li>
         <li><a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/code_of_behaviour_player.pdf" target="_blank">For Players</a></li>
@@ -253,7 +254,7 @@
     <div class="footer-bottom">
       <div>© 2026 Parklea Soccer Football Club</div>
       <div class="center">
-        
+        <a href="admin" style="color: inherit; text-decoration: none; opacity: 0.5; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Admin Login</a>
       </div>
       <div class="right"><a href="https://www.anantasystems.com.au/" target="_blank" rel="noopener" style="color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Designed by <img src="/assets/footer-as.png" alt="Ananta Systems" style="height: 14px; width: auto; object-fit: contain;"> · Built for forever</a></div>
     </div>

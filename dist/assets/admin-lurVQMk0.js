@@ -1,0 +1,1 @@
+import"./modulepreload-polyfill-B5Qt9EMX.js";const i=(n,e=document)=>e.querySelector(n),c={unconfigured:i("#viewUnconfigured"),login:i("#viewLogin"),dashboard:i("#viewDashboard")};function r(n){Object.entries(c).forEach(([e,o])=>{o.hidden=e!==n})}async function t(){{r("unconfigured");return}}t();

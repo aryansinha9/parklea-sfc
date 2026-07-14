@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="image-slot.js"></script>
+<script type="module" src="js/cms.js"></script>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -151,7 +152,7 @@
     <h4 class="section-title reveal" style="text-align: center; font-size: 40px; margin-bottom: 16px;">Meet Our Sponsors</h4>
     <p class="reveal d1" style="text-align: center; max-width: 600px; margin: 0 auto 40px; font-size: 18px; opacity: 0.85;">Thank you to all our incredible sponsors who support Parklea SFC. We are deeply grateful for your continued partnership.</p>
     
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px;" data-cms="sponsors-page">
       <div class="sponsor-placeholder reveal d1">JOGA</div>
       <div class="sponsor-placeholder reveal d2">H3VISUALS</div>
       <div class="sponsor-placeholder reveal d3">SPONSOR 3</div>
@@ -264,7 +265,7 @@
     <div class="footer-bottom">
       <div>© 2026 Parklea Soccer Football Club</div>
       <div class="center">
-        
+        <a href="admin" style="color: inherit; text-decoration: none; opacity: 0.5; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">Admin Login</a>
       </div>
       <div class="right"><a href="https://www.anantasystems.com.au/" target="_blank" rel="noopener" style="color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Designed by <img src="/assets/footer-as.png" alt="Ananta Systems" style="height: 14px; width: auto; object-fit: contain;"> · Built for forever</a></div>
     </div>
