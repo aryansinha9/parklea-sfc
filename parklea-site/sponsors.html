@@ -12,7 +12,7 @@
 <script type="module" src="js/cms.js"></script>
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-cms-page="sponsors">
 
 <!-- ============== NAV ============== -->
 <nav class="nav nav-solid" id="nav" aria-label="Primary">
@@ -38,6 +38,9 @@
       <a class="nav-trigger">Teams</a>
       <div class="nav-dropdown">
         <a href="miniroos">Mini Roos Football</a>
+        <a href="small-sided-football">Small-Sided Football</a>
+        <a href="junior-football">Junior Football</a>
+        <a href="senior-football">Senior Football</a>
       </div>
     </div>
     <div class="nav-item">
@@ -79,7 +82,7 @@
       </div>
     </div>
     <a href="http://www.parkleasfc.com.au/401/login.php?redirect=/psfc-shop.html" target="_blank" rel="noopener">Shop</a>
-    <a href="https://tinyurl.com/PSFC-Registrations" target="_blank" rel="noopener" class="nav-cta"><span>Register</span></a>
+    <span class="nav-cta is-disabled" role="link" aria-disabled="true" title="Registrations open again next season."><span>Register</span></span>
   </div>
   <button class="nav-menu-btn" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
@@ -101,6 +104,9 @@
       <a class="mm-link mm-toggle">Teams <span class="mm-arrow">▾</span></a>
       <div class="mm-sub">
         <a href="miniroos">Mini Roos Football</a>
+        <a href="small-sided-football">Small-Sided Football</a>
+        <a href="junior-football">Junior Football</a>
+        <a href="senior-football">Senior Football</a>
       </div>
     </div>
     <div class="mm-item">
@@ -133,7 +139,7 @@
       </div>
     </div>
     <a href="http://www.parkleasfc.com.au/401/login.php?redirect=/psfc-shop.html" class="mm-link" target="_blank" rel="noopener">Shop</a>
-    <a href="https://tinyurl.com/PSFC-Registrations" target="_blank" rel="noopener" class="mobile-cta">Register</a>
+    <span class="mobile-cta is-disabled" role="link" aria-disabled="true" title="Registrations open again next season.">Register</span>
   </div>
 </div>
 
@@ -143,14 +149,14 @@
 
 
 <div class="page-header header-maroon grain">
-  <div class="page-eyebrow reveal">Sponsors</div>
-  <h1 class="page-title reveal d1">Our<br/><em>Partners.</em></h1>
+  <div class="page-eyebrow reveal" data-cms-text="eyebrow">Sponsors</div>
+  <h1 class="page-title reveal d1"><span data-cms-text="title_a">Our</span><br/><em data-cms-text="title_b">Partners.</em></h1>
 </div>
 
 <section class="section" id="meet-our-sponsors">
   <div class="section-inner">
-    <h4 class="section-title reveal" style="text-align: center; font-size: 40px; margin-bottom: 16px;">Meet Our Sponsors</h4>
-    <p class="reveal d1" style="text-align: center; max-width: 600px; margin: 0 auto 40px; font-size: 18px; opacity: 0.85;">Thank you to all our incredible sponsors who support Parklea SFC. We are deeply grateful for your continued partnership.</p>
+    <h4 class="section-title reveal" style="text-align: center; font-size: 40px; margin-bottom: 16px;" data-cms-text="meet_title">Meet Our Sponsors</h4>
+    <p class="reveal d1" style="text-align: center; max-width: 600px; margin: 0 auto 40px; font-size: 18px; opacity: 0.85;" data-cms-text="meet_intro">Thank you to all our incredible sponsors who support Parklea SFC. We are deeply grateful for your continued partnership.</p>
     
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px;" data-cms="sponsors-page">
       <div class="sponsor-placeholder reveal d1">JOGA</div>
@@ -165,8 +171,8 @@
 
 <section class="section alt" id="become-a-sponsor">
   <div class="section-inner">
-    <h4 class="section-title reveal" style="text-align: center; font-size: 40px; margin-bottom: 16px;">Sponsorship Opportunities</h4>
-    <p class="reveal d1" style="text-align: center; max-width: 600px; margin: 0 auto 48px; font-size: 18px; opacity: 0.85;">If you are interested in sponsoring Parklea SFC or would like to find out more information, there are great sponsorship opportunities available at the club.</p>
+    <h4 class="section-title reveal" style="text-align: center; font-size: 40px; margin-bottom: 16px;" data-cms-text="become_title">Sponsorship Opportunities</h4>
+    <p class="reveal d1" style="text-align: center; max-width: 600px; margin: 0 auto 48px; font-size: 18px; opacity: 0.85;" data-cms-text="become_intro">If you are interested in sponsoring Parklea SFC or would like to find out more information, there are great sponsorship opportunities available at the club.</p>
     
     <div class="form-container reveal d2">
       <!-- To connect to Web3Forms, add your Access Key to the action URL or hidden input -->
@@ -214,7 +220,7 @@
     <div class="footer-top">
       <div class="footer-brand">
         <h4>Parklea<br/>SFC.</h4>
-        <p>Parklea Reserve, NSW · Football club since 1974. Premier members and juniors welcome.</p>
+        <p>Parklea Reserve, NSW · Football club since 1977. Premier members and juniors welcome.</p>
         <form class="footer-news" id="newsletterForm">
           <input type="email" placeholder="your@email.com" aria-label="Email"/>
           <button type="submit">Subscribe</button>

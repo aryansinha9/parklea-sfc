@@ -131,7 +131,13 @@
 .admin-brand-name { font-family: var(--a-display); font-weight: 800; text-transform: uppercase; font-size: 18px; letter-spacing: 0.02em; }
 .admin-brand-sub { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.5; }
 
-.admin-nav { display: flex; flex-direction: column; padding: 16px 12px; gap: 4px; flex: 1; }
+.admin-nav { display: flex; flex-direction: column; padding: 16px 12px; gap: 4px; flex: 1; overflow-y: auto; }
+.admin-nav-group {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  padding: 16px 14px 4px;
+}
+.admin-nav-group:first-child { padding-top: 4px; }
 .admin-nav button {
   font: inherit;
   font-weight: 600;

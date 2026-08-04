@@ -28,7 +28,84 @@ function inject(container, html) {
 const linkAttrs = (url, newTab) =>
   `href="${esc(url)}"${newTab ? ' target="_blank" rel="noopener"' : ''}`;
 
-const BADGES = { open: 'Open Now', new: 'New', soon: 'Coming Soon' };
+// ---------- Editable page copy ----------
+// Elements marked data-cms-text / data-cms-html are filled from the page_content
+// table for the page named in <body data-cms-page="…">. Only the copy inside an
+// element is ever replaced — never its tag, classes, or position — and the value
+// is sanitised down to plain formatting, so an admin can change words but cannot
+// change the design. If a page has no saved row, the static HTML stays as-is.
+
+const INLINE_TAGS = new Set(['EM', 'I', 'STRONG', 'B', 'BR', 'A', 'SMALL', 'U']);
+const BLOCK_TAGS  = new Set(['P', 'UL', 'OL', 'LI', 'H4', 'H5', 'BLOCKQUOTE']);
+const DROP_TAGS   = new Set(['SCRIPT', 'STYLE', 'TEMPLATE', 'IFRAME', 'OBJECT']);
+
+// Links may only point somewhere a browser can safely navigate — never javascript:.
+const safeUrl = (url) => /^\s*(https?:|mailto:|tel:|[./#?])/i.test(url) ? url.trim() : null;
+
+function clean(el, allowBlocks) {
+  for (const child of [...el.childNodes]) {
+    if (child.nodeType === Node.TEXT_NODE) continue;
+    if (child.nodeType !== Node.ELEMENT_NODE) { child.remove(); continue; }
+    if (DROP_TAGS.has(child.tagName)) { child.remove(); continue; } // contents and all
+    clean(child, allowBlocks); // clean the subtree before deciding on the parent
+    if (!INLINE_TAGS.has(child.tagName) && !(allowBlocks && BLOCK_TAGS.has(child.tagName))) {
+      child.replaceWith(...child.childNodes); // drop the tag, keep the words
+      continue;
+    }
+    const href = child.tagName === 'A' ? safeUrl(child.getAttribute('href') || '') : null;
+    for (const attr of [...child.attributes]) child.removeAttributeNode(attr);
+    if (child.tagName === 'A') {
+      if (!href) { child.replaceWith(...child.childNodes); continue; } // unusable link → plain text
+      child.href = href; child.target = '_blank'; child.rel = 'noopener';
+    }
+  }
+  return el;
+}
+
+function toHtml(value, allowBlocks) {
+  // Parsed inert (no scripts, no network) before it is cleaned and inserted.
+  if (/<[a-z][\s\S]*>/i.test(value)) {
+    return clean(new DOMParser().parseFromString(value, 'text/html').body, allowBlocks).innerHTML;
+  }
+  if (allowBlocks) {
+    return value.split(/\n\s*\n/).filter(p => p.trim())
+      .map(p => `<p>${esc(p.trim()).replace(/\n/g, '<br>')}</p>`).join('');
+  }
+  return esc(value).replace(/\n/g, '<br>');
+}
+
+async function renderPageCopy() {
+  const page = document.body.dataset.cmsPage;
+  const nodes = document.querySelectorAll('[data-cms-text], [data-cms-html], [data-cms-href]');
+  if (!page || !nodes.length) return;
+  const { data, error } = await supabase.from('page_content').select('key, value').eq('page', page);
+  if (error || !data?.length) return;
+  const saved = new Map(data.map(r => [r.key, r.value]));
+  nodes.forEach(el => {
+    if (el.dataset.cmsHref) {
+      const url = saved.get(el.dataset.cmsHref);
+      if (url && safeUrl(url)) el.href = safeUrl(url);
+    }
+    const isBlock = el.hasAttribute('data-cms-html');
+    const key = isBlock ? el.dataset.cmsHtml : el.dataset.cmsText;
+    if (!key) return;
+    const value = saved.get(key);
+    if (value) el.innerHTML = toHtml(value, isBlock);
+  });
+}
+
+// ---------- Registration page: FAQs ----------
+async function renderFaqs(container) {
+  const { data, error } = await supabase.from('faqs').select('*').order('sort_order');
+  if (error || !data?.length) return;
+  inject(container, data.map(f => `
+    <div class="faq-item reveal">
+      <div class="faq-q">${esc(f.question)}</div>
+      <div class="faq-a">${toHtml(f.answer, false)}</div>
+    </div>`).join(''));
+}
+
+const BADGES = { open: 'Open Now', new: 'New', soon: 'Coming Soon', closed: 'Closed Now' };
 const TIERS = { principal: 'Major Partner', major: 'Major Partner', official: 'Official Partner' };
 const DELAY = ['', ' d1', ' d2', ' d3'];
 
@@ -36,13 +113,23 @@ const DELAY = ['', ' d1', ' d2', ' d3'];
 async function renderQuickLinks(container) {
   const { data, error } = await supabase.from('quick_links').select('*').order('sort_order');
   if (error || !data?.length) return;
-  inject(container, data.map((q, i) => `
-    <a ${linkAttrs(q.url, q.new_tab)} class="ql-card reveal${DELAY[i % 4]}">
-      ${q.badge !== 'none' && BADGES[q.badge] ? `<span class="ql-badge ${esc(q.badge)}">${BADGES[q.badge]}</span>` : ''}
+  inject(container, data.map((q, i) => {
+    const badge = q.badge !== 'none' && BADGES[q.badge]
+      ? `<span class="ql-badge ${esc(q.badge)}">${BADGES[q.badge]}</span>` : '';
+    const body = `
+      ${badge}
       <h4>${esc(q.title)}</h4>
-      <p>${esc(q.description)}</p>
+      <p>${esc(q.description)}</p>`;
+    // A disabled card is a plain div — greyed out, not clickable — with the
+    // note (e.g. "Registrations open again next season.") in place of the arrow.
+    return q.disabled
+      ? `<div class="ql-card is-disabled reveal${DELAY[i % 4]}" role="link" aria-disabled="true">${body}
+      ${q.note ? `<span class="ql-note">${esc(q.note)}</span>` : ''}
+    </div>`
+      : `<a ${linkAttrs(q.url, q.new_tab)} class="ql-card reveal${DELAY[i % 4]}">${body}
       <span class="ql-arrow">→</span>
-    </a>`).join(''));
+    </a>`;
+  }).join(''));
 }
 
 // ---------- Homepage: "Built with great partners" (featured sponsors) ----------
@@ -154,11 +241,12 @@ function grab(name) { return document.querySelector(`[data-cms="${name}"]`); }
 updateCommitteeYear(); // runs even without Supabase configured
 
 if (supabase) {
-  const jobs = [];
+  const jobs = [renderPageCopy()];
   const ql = grab('quick-links');          if (ql) jobs.push(renderQuickLinks(ql));
   const hs = grab('sponsors-home');        if (hs) jobs.push(renderHomeSponsors(hs));
   const sp = grab('sponsors-page');        if (sp) jobs.push(renderSponsorsPage(sp));
   const lm = grab('life-members');         if (lm) jobs.push(renderLifeMembers(lm));
+  const fq = grab('faqs');                 if (fq) jobs.push(renderFaqs(fq));
 
   const committeeSections = {};
   for (const s of ['executive', 'management', 'general']) {
