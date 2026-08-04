@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="image-slot.js"></script>
-  <script type="module" crossorigin src="/assets/modulepreload-polyfill-B5Qt9EMX.js"></script>
-  <script type="module" crossorigin src="/assets/cms-BJmTDkzA.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/styles-Z_XbiwZx.css">
+  <script type="module" crossorigin src="/assets/supabase-client-BJNYIeL5.js"></script>
+  <script type="module" crossorigin src="/assets/cms-DSQdkLEK.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/styles-USpT15G0.css">
 </head>
 <body>
 
@@ -39,6 +39,9 @@
       <a class="nav-trigger">Teams</a>
       <div class="nav-dropdown">
         <a href="miniroos">Mini Roos Football</a>
+        <a href="small-sided-football">Small-Sided Football</a>
+        <a href="junior-football">Junior Football</a>
+        <a href="senior-football">Senior Football</a>
       </div>
     </div>
     <div class="nav-item">
@@ -80,7 +83,7 @@
       </div>
     </div>
     <a href="http://www.parkleasfc.com.au/401/login.php?redirect=/psfc-shop.html" target="_blank" rel="noopener">Shop</a>
-    <a href="https://tinyurl.com/PSFC-Registrations" target="_blank" rel="noopener" class="nav-cta"><span>Register</span></a>
+    <span class="nav-cta is-disabled" role="link" aria-disabled="true" title="Registrations open again next season."><span>Register</span></span>
   </div>
   <button class="nav-menu-btn" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
@@ -102,6 +105,9 @@
       <a class="mm-link mm-toggle">Teams <span class="mm-arrow">▾</span></a>
       <div class="mm-sub">
         <a href="miniroos">Mini Roos Football</a>
+        <a href="small-sided-football">Small-Sided Football</a>
+        <a href="junior-football">Junior Football</a>
+        <a href="senior-football">Senior Football</a>
       </div>
     </div>
     <div class="mm-item">
@@ -134,7 +140,7 @@
       </div>
     </div>
     <a href="http://www.parkleasfc.com.au/401/login.php?redirect=/psfc-shop.html" class="mm-link" target="_blank" rel="noopener">Shop</a>
-    <a href="https://tinyurl.com/PSFC-Registrations" target="_blank" rel="noopener" class="mobile-cta">Register</a>
+    <span class="mobile-cta is-disabled" role="link" aria-disabled="true" title="Registrations open again next season.">Register</span>
   </div>
 </div>
 
@@ -144,16 +150,17 @@
     <source src="/assets/hero-bg-GNoU_eL4.mp4" type="video/mp4">
   </video>
   <div class="hero-content">
-    <div class="hero-eyebrow">Parklea · Founded 1974</div>
+    <div class="hero-eyebrow">Parklea · Founded 1977</div>
     <h1>
       <span class="stack">THIS IS</span>
       <span class="stack">PARKLEA.</span>
     </h1>
     <p class="hero-sub">A community forged on passion. A club reborn for ambition.</p>
     <div class="hero-actions">
-      <a href="https://tinyurl.com/PSFC-Registrations" target="_blank" rel="noopener" class="btn btn-primary"><span>Register Now</span></a>
-      <a href="https://www.instagram.com/p/DUzVRs5j3J8/" target="_blank" rel="noopener" class="btn btn-ghost"><span class="btn-play" aria-hidden="true"></span>Watch</a>
+      <button type="button" class="btn btn-primary is-disabled" disabled aria-disabled="true"><span>Register Now</span></button>
+      <button type="button" class="btn btn-ghost is-disabled" disabled aria-disabled="true"><span class="btn-play" aria-hidden="true"></span>Watch</button>
     </div>
+    <p class="hero-note">Registrations open again next season · Highlights coming soon</p>
   </div>
 
   <div class="hero-scrollcue">
@@ -170,11 +177,11 @@
     <div class="statement-eyebrow reveal">CHAPTER 01 — IDENTITY</div>
     <h2 class="reveal d1">Fifty&nbsp;years of <em>football</em>, one&nbsp;suburb,<br/>a&nbsp;thousand&nbsp;stories.</h2>
     <div class="statement-foot">
-      <p class="reveal d2">Parklea SFC is more than a community club. It's a place built by the people of Western Sydney — coaches, families, players — who treat this game like it's our religion. Premium ambitions. Grassroots heart.</p>
+      <p class="reveal d2">Parklea SFC is where Western Sydney families come to belong. For fifty years, parents have run the canteen, neighbours have coached from the sideline, and kids have made friendships that outlast every season. Big ambitions, always — but grassroots heart first.</p>
       <div class="meta reveal d3">
-        <div>EST. 1974</div>
+        <div>EST. 1977</div>
         <div>PARKLEA · NSW</div>
-        <div>1 BADGE · 12 TEAMS</div>
+        <div>1 BADGE</div>
       </div>
     </div>
   </div>
@@ -222,26 +229,24 @@
     <p class="lead reveal d2">Key resources, registrations, and everything you need for the 2026 season — all in one place.</p>
   </div>
   <div class="ql-grid" data-cms="quick-links">
-    <a href="https://tinyurl.com/PSFC-Registrations" class="ql-card reveal" target="_blank" rel="noopener">
-      <span class="ql-badge open">Open Now</span>
+    <div class="ql-card is-disabled reveal" role="link" aria-disabled="true">
+      <span class="ql-badge closed">Closed Now</span>
       <h4>Register for 2026</h4>
-      <p>Secure your spot for the upcoming season. Senior, women's and junior registrations are now live.</p>
-      <span class="ql-arrow">→</span>
-    </a>
+      <p>Senior, women's and junior registrations for the 2026 season have now closed.</p>
+      <span class="ql-note">Registrations open again next season.</span>
+    </div>
     <a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/training_allocation_2026_v4.pdf" class="ql-card reveal d1" target="_blank" rel="noopener">
       <span class="ql-badge new">New</span>
       <h4>Training Schedule</h4>
       <p>View the full training allocation for all squads across the 2026 season.</p>
       <span class="ql-arrow">→</span>
     </a>
-    <a href="https://www.trybooking.com/events/landing/1566830" class="ql-card reveal d2" target="_blank" rel="noopener">
-      <span class="ql-badge open">Open Now</span>
-      <h4>Super Kickers</h4>
-      <p>Register your little one for our flagship program designed for 2–4 year olds.</p>
+    <a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/2026_committee_nomination_form_final.pdf" class="ql-card reveal d2" target="_blank" rel="noopener">
+      <h4>Committee Nominations</h4>
+      <p>Nominate for the 2026 committee and help shape the future of the club.</p>
       <span class="ql-arrow">→</span>
     </a>
     <a href="https://www.trybooking.com/events/landing/1566830" class="ql-card reveal d3" target="_blank" rel="noopener">
-      <span class="ql-badge new">New</span>
       <h4>Development Program</h4>
       <p>Elevate your game with our new development pathway. Information and registration open.</p>
       <span class="ql-arrow">→</span>
@@ -262,11 +267,12 @@
       <p>Key dates, match days, and events for the full 2026 season.</p>
       <span class="ql-arrow">→</span>
     </a>
-    <a href="http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/2026_committee_nomination_form_final.pdf" class="ql-card reveal d3" target="_blank" rel="noopener">
-      <h4>Committee Nominations</h4>
-      <p>Nominate for the 2026 committee and help shape the future of the club.</p>
-      <span class="ql-arrow">→</span>
-    </a>
+    <div class="ql-card is-disabled reveal d3" role="link" aria-disabled="true">
+      <span class="ql-badge closed">Closed Now</span>
+      <h4>Super Kickers</h4>
+      <p>Our flagship program for 2–4 year olds. Registrations for this season have now closed.</p>
+      <span class="ql-note">Registrations open again next season.</span>
+    </div>
   </div>
 </section>
 
@@ -285,13 +291,13 @@
     <div class="maroon-grid">
       <h2 class="reveal d1">Be part of<br/>the next<br/><em>fifty.</em></h2>
       <div>
-        <p class="lead reveal d2">2026 registrations are open. Eight squads across seniors, women's and junior football. Limited places in the new development program.</p>
-        <a href="https://tinyurl.com/PSFC-Registrations" target="_blank" rel="noopener" class="btn btn-primary reveal d3"><span>Register for 2026</span><span class="btn-arrow"></span></a>
+        <p class="lead reveal d2">Registrations for 2026 have closed. Eight squads across seniors, women's and junior football, plus our development program — we'll open the doors again next season.</p>
+        <button type="button" class="btn btn-primary is-disabled reveal d3" disabled aria-disabled="true"><span>Registrations Closed</span><span class="btn-arrow"></span></button>
       </div>
     </div>
     <div class="maroon-stats">
-      <div class="reveal"><div class="stat-num">1,400<sup>+</sup></div><div class="stat-label">Registered Members</div></div>
-      <div class="reveal d1"><div class="stat-num">52</div><div class="stat-label">Years In Parklea</div></div>
+      <div class="reveal"><div class="stat-num">700<sup>+</sup></div><div class="stat-label">Registered Members</div></div>
+      <div class="reveal d1"><div class="stat-num">50</div><div class="stat-label">Years In Parklea</div></div>
       <div class="reveal d2"><div class="stat-num">12</div><div class="stat-label">Senior &amp; Junior Squads</div></div>
       <div class="reveal d3"><div class="stat-num">9</div><div class="stat-label">Premiership Titles</div></div>
     </div>
@@ -353,7 +359,7 @@
           </div>
         </div>
       </div>
-      <a href="https://tinyurl.com/PSFC-Registrations" target="_blank" rel="noopener" class="btn btn-primary sk-cta"><span>Register for Super Kickers</span><span class="btn-arrow"></span></a>
+      <button type="button" class="btn btn-primary is-disabled on-light sk-cta" disabled aria-disabled="true"><span>Registrations Open Again Next Season</span><span class="btn-arrow"></span></button>
     </div>
   </div>
 </section>
@@ -493,7 +499,7 @@
     <div class="footer-top">
       <div class="footer-brand">
         <h4>Parklea<br/>SFC.</h4>
-        <p>Parklea Reserve, NSW · Football club since 1974. Premier members and juniors welcome.</p>
+        <p>Parklea Reserve, NSW · Football club since 1977. Premier members and juniors welcome.</p>
         <form class="footer-news" id="newsletterForm">
           <input type="email" placeholder="your@email.com" aria-label="Email"/>
           <button type="submit">Subscribe</button>

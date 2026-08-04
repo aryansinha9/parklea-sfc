@@ -90,7 +90,7 @@
     font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
     position: relative; z-index: 2;
   }
-  .nav-links > a, .nav-trigger { position: relative; padding: 6px 0; transition: opacity 300ms var(--ease); cursor: pointer; }
+  .nav-links > a, .nav-links > .nav-cta, .nav-trigger { position: relative; padding: 6px 0; transition: opacity 300ms var(--ease); cursor: pointer; }
   .nav-links > a::after, .nav-trigger::after {
     content: ""; position: absolute; left: 0; right: 100%; bottom: 0;
     height: 1px; background: currentColor; transition: right 400ms var(--ease);
@@ -162,6 +162,7 @@
     transition: background 400ms var(--ease), color 400ms var(--ease);
   }
   .nav-cta::after { display: none; }
+  .nav-cta.is-disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
   .nav-cta:hover { background: currentColor; }
   .nav-cta:hover span { color: var(--surface-1); }
   .nav.scrolled .nav-cta:hover span { color: var(--surface-1); }
@@ -290,6 +291,29 @@
   }
   .btn-ghost:hover .btn-play {
     border-color: #fff; background: rgba(255,255,255,0.08);
+  }
+
+  /* unavailable actions — greyed out, not clickable */
+  .btn.is-disabled,
+  .btn:disabled {
+    cursor: not-allowed; pointer-events: none;
+  }
+  /* three classes so this wins over the per-section .btn-primary overrides */
+  .btn.btn-primary.is-disabled {
+    background: rgba(255,255,255,0.28); color: rgba(255,255,255,0.55);
+  }
+  .btn.btn-primary.is-disabled::before { display: none; }
+  .btn.btn-ghost.is-disabled { color: rgba(255,255,255,0.45); }
+  .btn.btn-ghost.is-disabled .btn-play { border-color: rgba(255,255,255,0.25); }
+  .btn.btn-ghost.is-disabled .btn-play::after { border-left-color: rgba(255,255,255,0.45); }
+  /* on light backgrounds the translucent-white fill would vanish */
+  .btn.btn-primary.is-disabled.on-light {
+    background: rgba(46,73,144,0.12); color: rgba(46,73,144,0.45);
+  }
+  .btn.is-disabled .btn-arrow { opacity: 0.5; }
+  .hero-note {
+    margin-top: 20px; font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(255,255,255,0.6);
   }
 
   .hero-scrollcue {
@@ -959,6 +983,16 @@
     background: transparent; color: var(--ink); opacity: 0.5;
     border: 1.5px solid currentColor;
   }
+  .ql-badge.closed { background: rgba(46,73,144,0.18); color: rgba(46,73,144,0.75); }
+  .ql-card.is-disabled {
+    background: var(--surface-1); opacity: 0.6;
+    box-shadow: inset 0 0 0 1.5px rgba(46,73,144,0.14);
+    cursor: not-allowed; pointer-events: none;
+  }
+  .ql-note {
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700; opacity: 0.55; align-self: flex-start;
+  }
   .ql-card h4 {
     font-family: var(--display); font-weight: 700;
     font-size: 22px; text-transform: uppercase;
@@ -1110,7 +1144,7 @@
     transition: transform 500ms var(--ease);
   }
   .mobile-menu.open .mobile-menu-inner { transform: translateY(0); }
-  .mobile-menu a {
+  .mobile-menu a, .mobile-menu .mobile-cta {
     font-family: var(--display); font-weight: 800;
     font-size: 42px; text-transform: uppercase; color: #fff;
     letter-spacing: 0.02em; line-height: 1.1;
@@ -1127,6 +1161,9 @@
     color: #fff;
   }
   .mobile-menu .mobile-cta:hover { background: rgba(255,255,255,0.1); }
+  .mobile-menu .mobile-cta.is-disabled {
+    opacity: 0.4; cursor: not-allowed; pointer-events: none;
+  }
 
   /* ---------- MOBILE ACCORDION ---------- */
   .mm-item { text-align: center; }

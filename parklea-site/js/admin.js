@@ -33,7 +33,33 @@ const BADGE_OPTIONS = [
   { value: 'open', label: 'Open Now' },
   { value: 'new', label: 'New' },
   { value: 'soon', label: 'Coming Soon' },
+  { value: 'closed', label: 'Closed Now' },
 ];
+
+// Page tabs edit free text on one page. Every field maps to a data-cms-text /
+// data-cms-html / data-cms-href hook in that page's HTML, so saving changes the
+// words only — the layout, styling and animations are fixed in the markup.
+const HEAD = (extra = []) => [
+  { key: 'eyebrow', label: 'Small label above the title', type: 'text' },
+  { key: 'title_a', label: 'Page title — first line', type: 'text' },
+  { key: 'title_b', label: 'Page title — second line (shown in italics)', type: 'text' },
+  ...extra,
+];
+const BODY_BOX = (extra = []) => [
+  { key: 'heading', label: 'Section heading', type: 'text', full: true },
+  { key: 'body', label: 'Body text — blank line between paragraphs', type: 'textarea', full: true },
+  ...extra,
+];
+const CTA = (n = '') => [
+  { key: `cta${n}_label`, label: `Button ${n || 1} — label`, type: 'text' },
+  { key: `cta${n}_url`, label: `Button ${n || 1} — link`, type: 'text' },
+];
+
+function pageTab(title, page, hint, fields) {
+  return { title, page, hint, groups: [{ fields }] };
+}
+
+const TEAM_HINT = 'Replace the “Coming Soon” copy here once the details are confirmed.';
 
 const TABS = {
   quick_links: {
@@ -48,6 +74,8 @@ const TABS = {
         { key: 'description', label: 'Description', type: 'textarea', full: true },
         { key: 'badge', label: 'Badge', type: 'select', options: BADGE_OPTIONS, default: 'none' },
         { key: 'new_tab', label: 'Open in new tab', type: 'checkbox', default: true },
+        { key: 'disabled', label: 'Greyed out (not clickable)', type: 'checkbox', default: false },
+        { key: 'note', label: 'Note when greyed out', type: 'text' },
       ],
     }],
   },
@@ -131,7 +159,95 @@ const TABS = {
       ],
     })),
   },
+  faqs: {
+    title: 'FAQs',
+    hint: 'The “Frequently Asked Questions” list on the Registration page.',
+    groups: [{
+      table: 'faqs',
+      addLabel: '+ Add Question',
+      fields: [
+        { key: 'question', label: 'Question', type: 'text', required: true, full: true },
+        { key: 'answer', label: 'Answer', type: 'textarea', required: true, full: true },
+      ],
+    }],
+  },
+
+  // ---------- Page copy ----------
+  page_club: pageTab('Our Identity Page', 'club',
+    'Wording on the Our Identity page. The Life Members list has its own tab.', [
+      ...HEAD(),
+      { key: 'mission_title', label: 'Mission section heading', type: 'text', full: true },
+      { key: 'mission_body', label: 'Mission statement', type: 'textarea', full: true },
+      { key: 'history_title', label: 'History section heading', type: 'text', full: true },
+      { key: 'history_body', label: 'Club history', type: 'textarea', full: true },
+      { key: 'life_title', label: 'Life Members section heading', type: 'text', full: true },
+      { key: 'life_intro', label: 'Life Members intro line', type: 'textarea', full: true },
+    ]),
+
+  page_miniroos: pageTab('Mini Roos Page', 'miniroos', 'Wording and links on the Mini Roos Football page.', [
+    ...HEAD(), ...BODY_BOX([{ key: 'links', label: 'Link list — one <li><a href="…">Name</a></li> per line', type: 'textarea', full: true }]),
+  ]),
+  page_small_sided: pageTab('Small-Sided Football', 'small-sided-football', TEAM_HINT, [...HEAD(), ...BODY_BOX()]),
+  page_junior: pageTab('Junior Football', 'junior-football', TEAM_HINT, [...HEAD(), ...BODY_BOX()]),
+  page_senior: pageTab('Senior Football', 'senior-football', TEAM_HINT, [...HEAD(), ...BODY_BOX()]),
+
+  page_registration: pageTab('Registration Page', 'registration',
+    'Wording on the Registration & FAQs page. The questions themselves live in the FAQs tab.', [
+      ...HEAD(),
+      { key: 'reg_title', label: 'Registration section heading', type: 'text', full: true },
+      { key: 'alert_heading', label: 'Highlighted box — heading', type: 'text', full: true },
+      { key: 'alert_body', label: 'Highlighted box — text', type: 'textarea', full: true },
+      { key: 'alert_cta_label', label: 'Highlighted box — button label', type: 'text', full: true },
+      { key: 'step1_heading', label: 'First info box — heading', type: 'text', full: true },
+      { key: 'step1_body', label: 'First info box — text', type: 'textarea', full: true },
+      { key: 'step2_heading', label: 'Second info box — heading', type: 'text', full: true },
+      { key: 'step2_body', label: 'Second info box — text', type: 'textarea', full: true },
+      { key: 'faq_title', label: 'FAQ section heading', type: 'text', full: true },
+      { key: 'note_heading', label: 'Important note — heading', type: 'text', full: true },
+      { key: 'note_body', label: 'Important note — text', type: 'textarea', full: true },
+    ]),
+
+  page_payment_plans: pageTab('Payment Plans', 'payment-plans', 'Wording, button and payment links on the Payment Plans page.', [
+    ...HEAD(), ...BODY_BOX(), ...CTA(),
+    { key: 'links', label: 'Payment links — one <li><a href="…">Name</a></li> per line', type: 'textarea', full: true },
+  ]),
+  page_insurance: pageTab('Player Insurance', 'insurance', 'Wording and button on the Player Insurance page.', [
+    ...HEAD(), ...BODY_BOX(), ...CTA(),
+  ]),
+  page_training: pageTab('Training Allocation', 'training', 'Wording and download link on the Training Allocation page.', [
+    ...HEAD(), ...BODY_BOX(), ...CTA(),
+  ]),
+  page_wwcc: pageTab('Working with Children', 'wwcc', 'Wording and buttons on the Working with Children page.', [
+    ...HEAD(), ...BODY_BOX(), ...CTA(), ...CTA(2),
+  ]),
+  page_sponsors: pageTab('Sponsors Page', 'sponsors',
+    'Wording on the Sponsors page. The logos themselves are managed in the Sponsors tab.', [
+      ...HEAD(),
+      { key: 'meet_title', label: '“Meet Our Sponsors” heading', type: 'text', full: true },
+      { key: 'meet_intro', label: '“Meet Our Sponsors” intro', type: 'textarea', full: true },
+      { key: 'become_title', label: '“Become a Sponsor” heading', type: 'text', full: true },
+      { key: 'become_intro', label: '“Become a Sponsor” intro', type: 'textarea', full: true },
+    ]),
 };
+
+// The “Coming Soon” pages all share one template, addressed by ?page=… .
+const PLACEHOLDER_PAGES = [
+  ['page_cs_player_guide', 'Player Information Guide', 'player-guide'],
+  ['page_cs_field_setup',  'Field Setup',              'field-setup'],
+  ['page_cs_canteen',      'Canteen Roster',           'canteen'],
+  ['page_cs_coaching',     'Coaching & Referee Courses', 'coaching'],
+  ['page_cs_calendar',     'Calendar of Events',       'calendar'],
+  ['page_cs_newsletter',   'Weekly Newsletter',        'newsletter'],
+];
+for (const [tab, title, slug] of PLACEHOLDER_PAGES) {
+  TABS[tab] = pageTab(title, `cs-${slug}`,
+    'This page currently shows a “Coming Soon” message. Edit the wording here.', [
+      { key: 'eyebrow', label: 'Small label above the title', type: 'text' },
+      { key: 'title', label: 'Title (use <em>…</em> for the italic word, <br> for a new line)', type: 'text' },
+      { key: 'desc', label: 'Message', type: 'textarea', full: true },
+      { key: 'cta_label', label: 'Button label', type: 'text' },
+    ]);
+}
 
 // ============================================================
 // Auth
@@ -201,6 +317,8 @@ async function loadTab(key) {
   const root = $('#tabContent');
   root.innerHTML = '<div class="admin-loading">Loading…</div>';
 
+  if (tab.page) { await loadPageTab(key, tab, root); return; }
+
   // All groups of a tab share one table; fetch once.
   const table = tab.groups[0].table;
   const { data, error } = await supabase.from(table).select('*').order('sort_order');
@@ -248,6 +366,65 @@ async function loadTab(key) {
       card.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
     root.appendChild(addBtn);
+  }
+}
+
+// Page tabs are one card of free-text fields saved into page_content as
+// (page, key) → value. Nothing here can add markup to the page: each field
+// fills an element the page's HTML already defines.
+async function loadPageTab(key, tab, root) {
+  const { data, error } = await supabase.from('page_content').select('key, value').eq('page', tab.page);
+  if (currentTab !== key) return; // user switched tabs mid-fetch
+  if (error) {
+    root.innerHTML = `<div class="admin-empty">Couldn’t load content: ${error.message}</div>`;
+    return;
+  }
+  const saved = Object.fromEntries((data || []).map(r => [r.key, r.value]));
+
+  root.innerHTML = '';
+  for (const group of tab.groups) {
+    if (group.heading) {
+      const h = document.createElement('h3');
+      h.className = 'admin-section-title';
+      h.textContent = group.heading;
+      root.appendChild(h);
+    }
+
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    const grid = document.createElement('div');
+    grid.className = 'item-grid';
+    for (const f of group.fields) grid.appendChild(fieldControl(f, saved[f.key]));
+    card.appendChild(grid);
+    card.addEventListener('input', () => card.classList.add('unsaved'));
+
+    const actions = document.createElement('div');
+    actions.className = 'item-actions';
+    const spacer = document.createElement('div');
+    spacer.className = 'spacer';
+
+    const save = document.createElement('button');
+    save.className = 'icon-btn';
+    save.textContent = 'Save';
+    save.style.fontWeight = '700';
+    save.addEventListener('click', async () => {
+      const rows = group.fields.map(f => ({
+        page: tab.page,
+        key: f.key,
+        value: card.querySelector(`[data-field="${f.key}"]`).value.trim(),
+      }));
+      save.disabled = true;
+      const { error: err } = await supabase.from('page_content')
+        .upsert(rows, { onConflict: 'page,key' });
+      save.disabled = false;
+      if (err) { toast(`Save failed: ${err.message}`, true); return; }
+      card.classList.remove('unsaved');
+      toast('Saved — live website updated.');
+    });
+
+    actions.append(spacer, save);
+    card.appendChild(actions);
+    root.appendChild(card);
   }
 }
 
