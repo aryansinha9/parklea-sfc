@@ -3,11 +3,15 @@
 // enquiry form and the newsletter signup in the footer of every page — so they
 // POST to Web3Forms and report a real result instead of faking one.
 //
-// The access key lives in VITE_WEB3FORMS_KEY (see .env.example). It is a public,
-// write-only key by design — Web3Forms only ever emails the inbox the key is
-// registered to — so shipping it in the bundle is safe.
+// The access key is public by design — it is write-only, and Web3Forms will only
+// ever deliver to the inbox the key is registered to. Web3Forms' own docs put it
+// straight into the page markup, so it is committed here rather than kept in the
+// environment: the forms then work on any host with no configuration step, and
+// there is no way to deploy a build with the submit path silently missing.
+// VITE_WEB3FORMS_KEY still overrides it, so the key can be rotated without a
+// code change.
 
-const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY;
+const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || '6f172c43-0017-401a-bbd2-16e1512e1257';
 const ENDPOINT = 'https://api.web3forms.com/submit';
 const FALLBACK_EMAIL = 'parklea@bdsfa.com';
 
