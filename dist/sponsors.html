@@ -9,9 +9,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="image-slot.js"></script>
-  <script type="module" crossorigin src="/assets/supabase-client-BJNYIeL5.js"></script>
-  <script type="module" crossorigin src="/assets/cms-DSQdkLEK.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/styles-USpT15G0.css">
+  <script type="module" crossorigin src="/assets/modulepreload-polyfill-B5Qt9EMX.js"></script>
+  <script type="module" crossorigin src="/assets/supabase-client-BMv3_W-c.js"></script>
+  <script type="module" crossorigin src="/assets/cms-DCX3lG7M.js"></script>
+  <script type="module" crossorigin src="/assets/styles-BFe0x5sh.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/styles-DTYZr6js.css">
 </head>
 <body data-cms-page="sponsors">
 
@@ -176,10 +178,13 @@
     <p class="reveal d1" style="text-align: center; max-width: 600px; margin: 0 auto 48px; font-size: 18px; opacity: 0.85;" data-cms-text="become_intro">If you are interested in sponsoring Parklea SFC or would like to find out more information, there are great sponsorship opportunities available at the club.</p>
     
     <div class="form-container reveal d2">
-      <!-- To connect to Web3Forms, add your Access Key to the action URL or hidden input -->
-      <form action="#" method="POST">
-        <!-- <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE"> -->
-        
+      <!-- Submitted via Web3Forms by js/forms.js — the access key comes from VITE_WEB3FORMS_KEY. -->
+      <form method="POST" data-w3f
+            data-w3f-subject="New sponsorship enquiry — parkleasfc.com.au"
+            data-w3f-from="Parklea SFC — Sponsorship Form"
+            data-w3f-success="Thanks — we've received your sponsorship enquiry. A committee member will be in touch shortly.">
+        <input type="checkbox" name="botcheck" class="w3f-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
         <div class="form-group">
           <label for="businessName">Business Name</label>
           <input type="text" id="businessName" name="businessName" class="form-control" placeholder="Your Business" required />
@@ -222,8 +227,10 @@
       <div class="footer-brand">
         <h4>Parklea<br/>SFC.</h4>
         <p>Parklea Reserve, NSW · Football club since 1977. Premier members and juniors welcome.</p>
-        <form class="footer-news" id="newsletterForm">
-          <input type="email" placeholder="your@email.com" aria-label="Email"/>
+        <form class="footer-news" id="newsletterForm" data-w3f data-w3f-status="button"
+              data-w3f-subject="Newsletter signup — parkleasfc.com.au">
+          <input type="email" name="email" placeholder="your@email.com" aria-label="Email" required />
+          <input type="checkbox" name="botcheck" class="w3f-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <button type="submit">Subscribe</button>
         </form>
       </div>
@@ -351,23 +358,6 @@
     }
   });
 
-  // Newsletter form
-  const form = document.getElementById('newsletterForm');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const btn = form.querySelector('button');
-      btn.textContent = 'Thanks!';
-      btn.style.background = 'var(--maroon)';
-      btn.style.color = '#fff';
-      setTimeout(() => {
-        btn.textContent = 'Subscribe';
-        btn.style.background = '';
-        btn.style.color = '';
-        form.reset();
-      }, 3000);
-    });
-  }
 </script>
 </body>
 </html>
