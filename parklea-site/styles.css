@@ -910,6 +910,10 @@
     cursor: pointer; transition: background 400ms var(--ease);
   }
   .footer-news button:hover { background: #fff; }
+  /* Post-submit confirmation flash, applied by js/forms.js */
+  .footer-news button.is-flashed,
+  .footer-news button.is-flashed:hover { background: var(--maroon); color: #fff; }
+  .footer-news button[disabled] { cursor: progress; }
 
   .footer-col h5 {
     font-family: var(--body); font-weight: 700;
@@ -1398,4 +1402,44 @@ textarea.form-control {
 .form-submit {
   width: 100%;
   margin-top: 16px;
+}
+.form-submit[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* Honeypot — off-screen rather than display:none so bots still fill it in. */
+.w3f-hp {
+  position: absolute !important;
+  left: -9999px;
+  width: 1px; height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Submission result, inserted by js/forms.js under the submit button. */
+.form-status {
+  display: none;
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.form-status.is-shown { display: block; }
+.form-status.is-pending {
+  background: rgba(46,73,144,0.06);
+  color: var(--ink);
+  opacity: 0.75;
+}
+.form-status.is-ok {
+  background: rgba(46,73,144,0.08);
+  border: 1px solid rgba(46,73,144,0.2);
+  color: var(--ink);
+}
+.form-status.is-error {
+  background: rgba(110,14,29,0.07);
+  border: 1px solid rgba(110,14,29,0.25);
+  color: var(--maroon);
 }

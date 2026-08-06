@@ -25,8 +25,10 @@ function inject(container, html) {
   });
 }
 
+// '#' is an inert fallback: only an authenticated admin can set these URLs, and
+// every legitimate one passes safeUrl, so this fires on a hostile value alone.
 const linkAttrs = (url, newTab) =>
-  `href="${esc(url)}"${newTab ? ' target="_blank" rel="noopener"' : ''}`;
+  `href="${esc(safeUrl(url) || '#')}"${newTab ? ' target="_blank" rel="noopener"' : ''}`;
 
 // ---------- Editable page copy ----------
 // Elements marked data-cms-text / data-cms-html are filled from the page_content
@@ -40,7 +42,20 @@ const BLOCK_TAGS  = new Set(['P', 'UL', 'OL', 'LI', 'H4', 'H5', 'BLOCKQUOTE']);
 const DROP_TAGS   = new Set(['SCRIPT', 'STYLE', 'TEMPLATE', 'IFRAME', 'OBJECT']);
 
 // Links may only point somewhere a browser can safely navigate — never javascript:.
-const safeUrl = (url) => /^\s*(https?:|mailto:|tel:|[./#?])/i.test(url) ? url.trim() : null;
+// Anything carrying a scheme other than the four below is rejected; everything
+// else is a relative path, which cannot execute script. Bare relative URLs such
+// as "payment-plans" and "coming-soon?page=calendar" are real values in the CMS,
+// so they have to keep working.
+const SAFE_SCHEME = /^(?:https?|mailto|tel):/i;
+const ANY_SCHEME = /^[a-z][a-z0-9+.\-]*:/i;
+const safeUrl = (url) => {
+  // Browsers ignore control characters when resolving a URL, so strip them before
+  // testing — otherwise "java\tscript:alert(1)" would slip past as a relative path.
+  const u = String(url ?? '').trim().replace(/[\u0000-\u001F\u007F]/g, '');
+  if (!u) return null;
+  if (ANY_SCHEME.test(u) && !SAFE_SCHEME.test(u)) return null;
+  return u;
+};
 
 function clean(el, allowBlocks) {
   for (const child of [...el.childNodes]) {
@@ -173,8 +188,10 @@ async function renderSponsorsPage(container) {
       : esc(s.name);
     const delay = ['', ' d1', ' d2', ' d3', ' d4'][(i % 5)];
     const cls = `sponsor-placeholder reveal${delay}`;
-    return s.website_url
-      ? `<a href="${esc(s.website_url)}" target="_blank" rel="noopener" class="${cls}" style="text-decoration:none; color:inherit;" aria-label="${esc(s.name)}">${inner}</a>`
+    // An unusable URL falls back to the existing non-link tile rather than a dead anchor.
+    const href = safeUrl(s.website_url);
+    return href
+      ? `<a href="${esc(href)}" target="_blank" rel="noopener" class="${cls}" style="text-decoration:none; color:inherit;" aria-label="${esc(s.name)}">${inner}</a>`
       : `<div class="${cls}">${inner}</div>`;
   }).join(''));
 }
@@ -225,8 +242,13 @@ async function renderPolicies(sections) {
   for (const [section, container] of Object.entries(sections)) {
     const items = data.filter(p => p.section === section);
     if (!items.length) continue;
-    container.innerHTML = items.map(p => `
-      <li><a href="${esc(p.url)}" target="_blank">${esc(p.title)}</a></li>`).join('');
+    container.innerHTML = items.map(p => {
+      // A policy with an unusable URL still lists its title, just not as a link.
+      const href = safeUrl(p.url);
+      return href
+        ? `<li><a href="${esc(href)}" target="_blank" rel="noopener">${esc(p.title)}</a></li>`
+        : `<li>${esc(p.title)}</li>`;
+    }).join('');
   }
 }
 
