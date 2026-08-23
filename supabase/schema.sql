@@ -162,7 +162,7 @@ insert into public.life_members (name, year, sort_order) values
 
 insert into public.committee_members (section, role, name, email, mobile, sort_order) values
 ('executive', 'President',             'Maurice Krenich',   'president.parklea@gmail.com',      '0413 426 494', 1),
-('executive', 'Secretary',             'Karin Boulter',     'secretary.parklea@gmail.com',      '0413 615 722', 2),
+('executive', 'Secretary',             'David Quitto',     'secretary.parklea@gmail.com',      '0413 615 722', 2),
 ('executive', 'Vice President',        'Christos Panayi',   'svicepresident.parklea@gmail.com', '0407 077 421', 3),
 ('executive', 'Junior Vice President', 'Danielle Hancock',  'jvicepresident.parklea@gmail.com', '0414 267 870', 4),
 ('executive', 'Registrar',             'Lisa Reeves',       'registrar.parklea@gmail.com',      '0402 478 702', 5),
