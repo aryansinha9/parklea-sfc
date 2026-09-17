@@ -937,7 +937,7 @@
 
   /* ---------- QUICK LINKS ---------- */
   .quick-links {
-    background: var(--surface-2); color: var(--ink);
+    background: #ECE9E1; color: var(--ink);
     padding: 140px 48px;
   }
   .ql-head {
