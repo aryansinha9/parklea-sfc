@@ -16,6 +16,7 @@ create table public.quick_links (
   new_tab     boolean not null default true,
   disabled    boolean not null default false,  -- greyed out and not clickable
   note        text not null default '',        -- shown in place of the arrow on a disabled card
+  download    boolean not null default false,  -- link downloads the file instead of opening it
   sort_order  int not null default 0,
   created_at  timestamptz not null default now()
 );
@@ -128,14 +129,14 @@ create policy "Admin delete sponsor logos" on storage.objects for delete to auth
 
 -- ---------- SEED DATA (matches the current live content exactly) ----------
 
-insert into public.quick_links (title, description, url, badge, new_tab, disabled, note, sort_order) values
-('Register for 2026',     'Secure your spot for the upcoming season. Senior, women''s and junior registrations are now live.', 'https://tinyurl.com/PSFC-Registrations', 'closed', true, true, 'Registrations open again next season.', 1),
-('Training Schedule',     'View the full training allocation for all squads across the 2026 season.', 'http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/training_allocation_2026_v4.pdf', 'new', true, false, '', 2),
-('Committee Nominations', 'Nominate for the 2026 committee and help shape the future of the club.', 'http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/2026_committee_nomination_form_final.pdf', 'none', true, false, '', 3),
-('Development Program',   'Elevate your game with our new development pathway. Information and registration open.', 'https://www.trybooking.com/events/landing/1566830', 'none', true, false, '', 4),
-('Payment Plans',         'Flexible payment options available for the 2026 season fees.', 'payment-plans', 'none', false, false, '', 5),
-('U5s–U7s Parent Info',   'Everything parents need to know about junior football at Parklea SFC.', 'http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/under_5s_to_7s_faqs_2026.pdf', 'none', true, false, '', 6),
-('Season Calendar',       'Key dates, match days, and events for the full 2026 season.', 'coming-soon?page=calendar', 'soon', false, false, '', 7),
+insert into public.quick_links (title, description, url, badge, new_tab, disabled, note, download, sort_order) values
+('Register for 2026',     'Secure your spot for the upcoming season. Senior, women''s and junior registrations are now live.', 'https://tinyurl.com/PSFC-Registrations', 'closed', true, true, 'Registrations open again next season.', false, 1),
+('Training Schedule',     'View the full training allocation for all squads across the 2026 season.', 'http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/training_allocation_2026_v4.pdf', 'new', true, false, '', false, 2),
+('Committee Nominations', 'Nominate for the 2027 committee to help shape the club''s future.', '/docs/2027_committee_nomination_form_final.pdf', 'new', false, false, '', true, 3),
+('Development Program',   'Elevate your game with our new development pathway. Information and registration open.', 'https://www.trybooking.com/events/landing/1566830', 'none', true, false, '', false, 4),
+('Payment Plans',         'Flexible payment options available for the 2026 season fees.', 'payment-plans', 'none', false, false, '', false, 5),
+('U5s–U7s Parent Info',   'Everything parents need to know about junior football at Parklea SFC.', 'http://www.parkleasfc.com.au/uploads/3/1/0/6/31069323/under_5s_to_7s_faqs_2026.pdf', 'none', true, false, '', false, 6),
+('Season Calendar',       'Key dates, match days, and events for the full 2026 season.', 'coming-soon?page=calendar', 'soon', false, false, '', false, 7),
 ('Super Kickers',         'Our flagship program for 2–4 year olds. Registrations for this season have now closed.', 'https://www.trybooking.com/events/landing/1566830', 'closed', true, true, 'Registrations open again next season.', 8);
 
 insert into public.sponsors (name, logo_url, website_url, tier, tagline, featured, logo_height, sort_order) values
