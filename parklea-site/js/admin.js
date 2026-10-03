@@ -74,6 +74,7 @@ const TABS = {
         { key: 'description', label: 'Description', type: 'textarea', full: true },
         { key: 'badge', label: 'Badge', type: 'select', options: BADGE_OPTIONS, default: 'none' },
         { key: 'new_tab', label: 'Open in new tab', type: 'checkbox', default: true },
+        { key: 'download', label: 'Download file instead of opening it', type: 'checkbox', default: false },
         { key: 'disabled', label: 'Greyed out (not clickable)', type: 'checkbox', default: false },
         { key: 'note', label: 'Note when greyed out', type: 'text' },
       ],

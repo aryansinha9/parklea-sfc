@@ -27,8 +27,8 @@ function inject(container, html) {
 
 // '#' is an inert fallback: only an authenticated admin can set these URLs, and
 // every legitimate one passes safeUrl, so this fires on a hostile value alone.
-const linkAttrs = (url, newTab) =>
-  `href="${esc(safeUrl(url) || '#')}"${newTab ? ' target="_blank" rel="noopener"' : ''}`;
+const linkAttrs = (url, newTab, download = false) =>
+  `href="${esc(safeUrl(url) || '#')}"${download ? ' download' : newTab ? ' target="_blank" rel="noopener"' : ''}`;
 
 // ---------- Editable page copy ----------
 // Elements marked data-cms-text / data-cms-html are filled from the page_content
@@ -141,7 +141,7 @@ async function renderQuickLinks(container) {
       ? `<div class="ql-card is-disabled reveal${DELAY[i % 4]}" role="link" aria-disabled="true">${body}
       ${q.note ? `<span class="ql-note">${esc(q.note)}</span>` : ''}
     </div>`
-      : `<a ${linkAttrs(q.url, q.new_tab)} class="ql-card reveal${DELAY[i % 4]}">${body}
+      : `<a ${linkAttrs(q.url, q.new_tab, q.download)} class="ql-card reveal${DELAY[i % 4]}">${body}
       <span class="ql-arrow">→</span>
     </a>`;
   }).join(''));
