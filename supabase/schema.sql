@@ -127,6 +127,22 @@ create policy "Admin upload sponsor logos" on storage.objects for insert to auth
 create policy "Admin update sponsor logos" on storage.objects for update to authenticated using (bucket_id = 'sponsor-logos');
 create policy "Admin delete sponsor logos" on storage.objects for delete to authenticated using (bucket_id = 'sponsor-logos');
 
+-- ---------- STORAGE (uploaded files: PDFs, docs, images for Quick Links & Policies) ----------
+
+insert into storage.buckets (id, name, public, file_size_limit)
+values ('uploads', 'uploads', true, 52428800)  -- 50 MB per file
+on conflict (id) do update set public = true, file_size_limit = 52428800;
+
+drop policy if exists "Public read uploads"  on storage.objects;
+drop policy if exists "Admin upload uploads"  on storage.objects;
+drop policy if exists "Admin update uploads"  on storage.objects;
+drop policy if exists "Admin delete uploads"  on storage.objects;
+
+create policy "Public read uploads"  on storage.objects for select using (bucket_id = 'uploads');
+create policy "Admin upload uploads" on storage.objects for insert to authenticated with check (bucket_id = 'uploads');
+create policy "Admin update uploads" on storage.objects for update to authenticated using (bucket_id = 'uploads');
+create policy "Admin delete uploads" on storage.objects for delete to authenticated using (bucket_id = 'uploads');
+
 -- ---------- SEED DATA (matches the current live content exactly) ----------
 
 insert into public.quick_links (title, description, url, badge, new_tab, disabled, note, download, sort_order) values

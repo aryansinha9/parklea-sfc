@@ -1,0 +1,1 @@
+const r=new IntersectionObserver(e=>{e.forEach(t=>{t.isIntersecting&&(t.target.classList.add("in"),r.unobserve(t.target))})},{threshold:.12,rootMargin:"0px 0px -8% 0px"});function o(){const e=document.querySelector('[data-cms="committee-year"]');e&&(e.textContent=new Date().getFullYear())}o();

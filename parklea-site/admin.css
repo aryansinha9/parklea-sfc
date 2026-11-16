@@ -245,6 +245,13 @@
 }
 .logo-preview.empty { display: none; }
 
+/* Upload-or-link field (Quick Links, Policies) */
+.file-row { display: flex; align-items: center; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.file-row input[type="file"] { font-size: 13px; max-width: 100%; }
+.file-current { font-size: 13px; font-weight: 700; color: var(--a-maroon); text-decoration: none; white-space: nowrap; }
+.file-current:hover { text-decoration: underline; }
+.file-current[hidden] { display: none; }
+
 .admin-empty {
   color: var(--a-muted);
   background: var(--a-surface);

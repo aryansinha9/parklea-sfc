@@ -70,7 +70,7 @@ const TABS = {
       addLabel: '+ Add Quick Link',
       fields: [
         { key: 'title', label: 'Title', type: 'text', required: true },
-        { key: 'url', label: 'Destination URL', type: 'text', required: true },
+        { key: 'url', label: 'Link or uploaded file', type: 'file', required: true },
         { key: 'description', label: 'Description', type: 'textarea', full: true },
         { key: 'badge', label: 'Badge', type: 'select', options: BADGE_OPTIONS, default: 'none' },
         { key: 'new_tab', label: 'Open in new tab', type: 'checkbox', default: true },
@@ -156,7 +156,7 @@ const TABS = {
       addLabel: '+ Add Link',
       fields: [
         { key: 'title', label: 'Title', type: 'text', required: true },
-        { key: 'url', label: 'URL / file link', type: 'text', required: true },
+        { key: 'url', label: 'Link or uploaded file', type: 'file', required: true },
       ],
     })),
   },
@@ -456,6 +456,8 @@ function fieldControl(f, value) {
     input.checked = !!value;
   } else if (f.type === 'image') {
     return imageControl(f, value, wrap, label);
+  } else if (f.type === 'file') {
+    return fileControl(f, value, wrap, label);
   } else {
     input = document.createElement('input');
     input.type = f.type === 'number' ? 'number' : 'text';
@@ -467,6 +469,17 @@ function fieldControl(f, value) {
   if (f.type === 'checkbox') { wrap.append(input, label); }
   else { wrap.append(label, input); }
   return wrap;
+}
+
+// Uploads one file to a public Storage bucket and returns its public URL.
+// Throws on failure so callers can report it.
+async function uploadToBucket(bucket, chosen) {
+  const safeName = chosen.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+  const path = `${Date.now()}-${safeName}`;
+  const { error } = await supabase.storage.from(bucket).upload(path, chosen, { upsert: false });
+  if (error) throw error;
+  const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+  return data.publicUrl;
 }
 
 function imageControl(f, value, wrap, label) {
@@ -486,19 +499,74 @@ function imageControl(f, value, wrap, label) {
     const chosen = file.files?.[0];
     if (!chosen) return;
     toast('Uploading logo…');
-    const safeName = chosen.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
-    const path = `${Date.now()}-${safeName}`;
-    const { error } = await supabase.storage.from('sponsor-logos').upload(path, chosen, { upsert: false });
-    if (error) { toast(`Upload failed: ${error.message}`, true); return; }
-    const { data } = supabase.storage.from('sponsor-logos').getPublicUrl(path);
-    hidden.value = data.publicUrl;
-    preview.src = data.publicUrl;
-    preview.classList.remove('empty');
-    hidden.dispatchEvent(new Event('input', { bubbles: true }));
-    toast('Logo uploaded — remember to Save.');
+    file.disabled = true;
+    try {
+      const url = await uploadToBucket('sponsor-logos', chosen);
+      hidden.value = url;
+      preview.src = url;
+      preview.classList.remove('empty');
+      hidden.dispatchEvent(new Event('input', { bubbles: true }));
+      toast('Logo uploaded — remember to Save.');
+    } catch (err) {
+      toast(`Upload failed: ${err.message}`, true);
+    } finally {
+      file.disabled = false;
+    }
   });
 
   wrap.append(label, preview, hidden, file);
+  return wrap;
+}
+
+// A link field that also lets the admin upload a file from their computer.
+// The visible text box holds the URL (pasting a link still works); choosing a
+// file uploads it to the "uploads" bucket and drops its public URL into the box.
+function fileControl(f, value, wrap, label) {
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.dataset.field = f.key;
+  input.value = value ?? '';
+  input.placeholder = 'Paste a link, or upload a file below';
+
+  const row = document.createElement('div');
+  row.className = 'file-row';
+
+  const file = document.createElement('input');
+  file.type = 'file';
+  file.accept = '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv,.txt,image/*';
+
+  const current = document.createElement('a');
+  current.className = 'file-current';
+  current.target = '_blank';
+  current.rel = 'noopener';
+  current.textContent = 'View current file ↗';
+  const syncCurrent = () => {
+    const v = input.value.trim();
+    current.href = v || '#';
+    current.hidden = !v;
+  };
+  syncCurrent();
+  input.addEventListener('input', syncCurrent);
+
+  file.addEventListener('change', async () => {
+    const chosen = file.files?.[0];
+    if (!chosen) return;
+    toast('Uploading file…');
+    file.disabled = true;
+    try {
+      const url = await uploadToBucket('uploads', chosen);
+      input.value = url;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      toast('File uploaded — remember to Save.');
+    } catch (err) {
+      toast(`Upload failed: ${err.message}`, true);
+    } finally {
+      file.disabled = false;
+    }
+  });
+
+  row.append(file, current);
+  wrap.append(label, input, row);
   return wrap;
 }
 

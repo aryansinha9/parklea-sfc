@@ -27,8 +27,18 @@ function inject(container, html) {
 
 // '#' is an inert fallback: only an authenticated admin can set these URLs, and
 // every legitimate one passes safeUrl, so this fires on a hostile value alone.
-const linkAttrs = (url, newTab, download = false) =>
-  `href="${esc(safeUrl(url) || '#')}"${download ? ' download' : newTab ? ' target="_blank" rel="noopener"' : ''}`;
+// The HTML `download` attribute is ignored for cross-origin files, so for a
+// Supabase-hosted upload we add the `?download` query param it honours server-side
+// (Content-Disposition: attachment) — that makes the download work from any origin.
+const STORAGE_PUBLIC = '/storage/v1/object/public/';
+const linkAttrs = (url, newTab, download = false) => {
+  let href = safeUrl(url) || '#';
+  if (download && href !== '#' && href.includes(STORAGE_PUBLIC) && !/[?&]download\b/.test(href)) {
+    href += (href.includes('?') ? '&' : '?') + 'download';
+  }
+  const rel = download ? ' download' : newTab ? ' target="_blank" rel="noopener"' : '';
+  return `href="${esc(href)}"${rel}`;
+};
 
 // ---------- Editable page copy ----------
 // Elements marked data-cms-text / data-cms-html are filled from the page_content
